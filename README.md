@@ -17,3 +17,11 @@ def deps do
   ]
 end
 ```
+
+Add the following to `nerves_defconfig`:
+
+```kconfig
+BR2_PACKAGE_TPM2_TOOLS=y
+BR2_PACKAGE_TPM2_TOOLS_FAPI=y
+BR2_PACKAGE_TPM2_TSS_ENGINE=y
+```
