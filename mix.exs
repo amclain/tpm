@@ -14,7 +14,6 @@ defmodule Tpm.MixProject do
       docs: docs(),
       test_coverage: [tool: ExCoveralls, test_task: "espec"],
       dialyzer: [
-        ignore_warnings: "dialyzer.ignore.exs",
         list_unused_filters: true,
         plt_file: {:no_warn, plt_file_path()},
       ],
