@@ -51,6 +51,8 @@ defmodule Tpm.MixProject do
       {:espec, "~> 1.9", only: :test},
       {:excoveralls, "~> 0.18", only: :test},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
+      {:muontrap, "~> 1.5"},
+      {:x509, "~> 0.8"},
     ]
   end
 
