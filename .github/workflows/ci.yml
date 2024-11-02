@@ -42,7 +42,7 @@ jobs:
           restore-keys: |
             plt-${{ github.ref }}-${{ github.sha }}
             plt-${{ github.ref }}-
-            plt-refs/heads/master-
+            plt-refs/heads/main-
       - name: Compile
         run: mix compile
       - name: Run dialyzer
