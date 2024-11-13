@@ -8,7 +8,6 @@ defmodule TPM.Crypto.Spec do
   let :private_key_path, do: "/tmp/tpm_ex/key"
 
   context "engine:" do
-
     it "returns an OTP crypto engine for tpm2tss" do
       allow :crypto |> to(accept :ensure_engine_loaded, fn name, path ->
         name |> should(eq "tpm2tss")

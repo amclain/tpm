@@ -85,3 +85,14 @@ Copy the CSR from the device with `cat` on the device or `scp` on the host and
 sign the CSR with the root or intermediate CA. Copy the signed certificate back
 to the device. For some connections, concatenating the entire certificate bundle
 into a file may be necessary.
+
+### Setting the TCTI
+
+By default, the TPM Command Transmission Interface (TCTI) is set to
+`device:/dev/tpmrm0` since this is the default path for a hardware TPM.
+This can be changed by setting the `:tcti` application property in the
+project's mix config.
+
+```ex
+config :tpm, :tcti, "device:/dev/tpmrm0"
+```
