@@ -3,7 +3,7 @@ defmodule TPM.TSS do
   Elixir wrapper for [tpm2tss](https://github.com/tpm2-software/tpm2-tss).
   """
 
-  @tpm_device Application.compile_env(:tpm, :device_path, "/dev/tpmrm0")
+  @tpm_tcti Application.compile_env(:tpm, :tcti, "device:/dev/tpmrm0")
 
   @doc """
   Generate TPM keys for tpm2-tss-engine.
@@ -14,7 +14,7 @@ defmodule TPM.TSS do
   @spec genkey(output_path :: String.t) ::
     :ok | {:error, return_code :: non_neg_integer, message :: String.t}
   def genkey(output_path) do
-    case cmd("tpm2tss-genkey", ["-a", "rsa", "-t", "device:#{@tpm_device}", output_path]) do
+    case cmd("tpm2tss-genkey", ["-a", "rsa", "-t", @tpm_tcti, output_path]) do
       {:ok, _} -> :ok
       error    -> error
     end

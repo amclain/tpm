@@ -10,7 +10,7 @@ defmodule TPM do
     | {:error, :unsupported_scheme, message :: String.t}
     | {:error, return_code :: non_neg_integer, message :: String.t}
 
-  @tpm_device Application.compile_env(:tpm, :device_path, "/dev/tpmrm0")
+  @tpm_tcti Application.compile_env(:tpm, :tcti, "device:/dev/tpmrm0")
 
   @doc """
   Clear the TPM.
@@ -23,7 +23,7 @@ defmodule TPM do
   def clear(opts)
 
   def clear(confirm: true) do
-    case cmd("tpm2_clear", ["-T", "device:#{@tpm_device}"]) do
+    case cmd("tpm2_clear", ["-T", @tpm_tcti]) do
       {:ok, _} -> :ok
       error    -> error
     end
@@ -38,7 +38,7 @@ defmodule TPM do
   """
   @spec getcap(capability :: :handles_nv_index) :: {:ok, [String.t]} | tpm2_error
   def getcap(_capability = :handles_nv_index) do
-    case cmd("tpm2_getcap", ["-T", "device:#{@tpm_device}", "handles-nv-index"]) do
+    case cmd("tpm2_getcap", ["-T", @tpm_tcti, "handles-nv-index"]) do
       {:ok, stdout} ->
         addresses =
           stdout
@@ -75,7 +75,7 @@ defmodule TPM do
           acc
       end)
 
-    case cmd("tpm2_nvdefine", ["-T", "device:#{@tpm_device}"] ++ args) do
+    case cmd("tpm2_nvdefine", ["-T", @tpm_tcti] ++ args) do
       {:ok, stdout} ->
         # stdout format:
         # nv-index: 0x1000001
@@ -116,7 +116,7 @@ defmodule TPM do
 
     case cmd(
       "tpm2_nvread",
-      ["-T", "device:#{@tpm_device}"] ++ args ++ [address],
+      ["-T", @tpm_tcti] ++ args ++ [address],
       stderr_to_stdout: !return_contents?
     ) do
       {:ok, _stdout} when not return_contents? ->
@@ -136,7 +136,7 @@ defmodule TPM do
   """
   @spec nvwrite(address :: String.t, path :: String.t) :: :ok | tpm2_error
   def nvwrite(address, path) do
-    case cmd("tpm2_nvwrite", ["-i", path, "-T", "device:#{@tpm_device}", address]) do
+    case cmd("tpm2_nvwrite", ["-i", path, "-T", @tpm_tcti, address]) do
       {:ok, _} -> :ok
       error    -> error
     end
